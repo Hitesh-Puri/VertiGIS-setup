@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns="https://geocortex.com/layout/v1" xmlns:web="https://geocortex.com/layout/web/v1" xmlns:custom="custom.92a1b683" id="layout-539ef2a6">
+  <split resizable="true" config="root" id="split-ac5693af">
+    <panel show-close-button="false" width="26" config="panel-config-1" id="panel-f9eb19ff">
+      <web:tabs config="tabs-config-1" id="tabs-30fc1d4a">
+        <stack config="stack-config-1" id="stack-e6d84b17">
+          <text config="text-config-1" id="text-c7c75906"/>
+        </stack>
+        <stack config="layer-stack" halign="center" id="stack-6441a074">
+          <layer-list models="#map-primary" config="layer-list-config-1" grow="50" id="layer-list-6b7384f9"/>
+          <layer-presets config="layer-presets-config-1" models="#map-primary" grow="50" id="layer-presets-bbc8f3b7"/>
+        </stack>
+        <legend models="#map-primary" config="legend-config-1" id="legend-59366a40"/>
+      </web:tabs>
+      <web:query-builder id="query-builder" config="query-builder-config-1" models="#map-primary" show-cancel-button="true"/>
+      <web:filter-builder id="filter-builder" config="filter-builder-config-1" models="#map-primary" show-cancel-button="true"/>
+      <results-list active="false" config="results-config-1" show-star-controls="true" id="results-list-563f316e"/>
+      <feature-details active="false" config="feature-details-config-1" show-star-controls="true" id="feature-details-8ca57760"/>
+      <workflow active="false" config="workflow-config-1" id="workflow-b92ac5c1"/>
+      <web:print-form id="print-form" models="#map-primary" active="false" config="printing"/>
+    </panel>
+    <stack config="root-right" id="stack-fe779b9e">
+      <split height="5.357142857142857" config="root-right-top" id="split-0ae77991">
+        <split grow="1" config="root-right-top-top" id="split-3fddc7f3">
+          <toolbar config="toolbar-config-1" id="toolbar-927c1f54"/>
+        </split>
+        <image grow="0" config="image-config-1" id="image-49202b62"/>
+      </split>
+      <stack resizable="true" config="root-right-bottom" id="stack-ff426969">
+        <map id="map-primary" config="default">
+          <web:feature-summary config="feature-summary-config-1" slot="popup" width="20" active="false" show-star-controls="true" id="feature-summary-1da92628"/>
+          <iwtm config="iwtm-config-1" slot="top-start" id="iwtm-89ee7aa6"/>
+          <search config="search-config-1" slot="top-end" id="search-457ca25d"/>
+          <search-new-extent config="search-config-1" slot="top-center" id="search-new-extent-4d45494f"/>
+          <user slot="top-end" config="user-config-1" id="user-32640d7f">
+            <web:user-preferences config="user-preference-settings-config-1" id="user-preferences-134b102c"/>
+          </user>
+          <web:map-3d-toggle config="map-3d-toggle-config-1" slot="top-end" id="map-3d-toggle-b3213c32"/>
+          <compass slot="top-end" config="compass-config-1" id="compass-7a2b06b3"/>
+          <expand config="expand-config-1" slot="bottom-end" id="expand-6ad3a67f">
+            <basemap-picker config="basemap-config-1" id="basemap-picker-13068958"/>
+          </expand>
+          <expand config="expand-config-2" slot="bottom-end" id="expand-ddb187a4">
+            <bookmarks config="bookmarks-config-1" id="bookmarks-9bd3fb13"/>
+          </expand>
+          <web:scale-input slot="bottom-start" config="scale-input-config-1" id="scale-input-7b758cd1"/>
+          <scalebar slot="bottom-start" config="scalebar-config-1" id="scalebar-76974085"/>
+          <map-coordinates slot="context-menu" config="map-coordinates-config-1" id="map-coordinates-bebc9abe"/>
+          <web:address slot="context-menu" config="address-config-1" id="address-23391916"/>
+          <web:geometry-toolbar id="geometry-toolbar" config="geometry-toolbar-config" slot="panel" active="false" size="medium"/>
+          <custom:layer-list-custom-menu config="layer-list-custom-menu-1" slot="bottom-start" width="22" id="layer-list-custom-menu-1"/>
+          <custom:connectmaster-layer-modal config="connectmaster-layer-modal-1" slot="top-start" id="connectmaster-layer-modal-1"/>
+        </map>
+        <panel show-close-button="true" show-minimize-button="false" show-maximize-button="false" active="false" config="panel-config-2" id="panel-32157b4c">
+          <web:results-table config="results-config-1" active="false" models="#map-primary" show-star-controls="true" id="results-table-10756532"/>
+        </panel>
+      </stack>
+    </stack>
+  </split>
+</layout>

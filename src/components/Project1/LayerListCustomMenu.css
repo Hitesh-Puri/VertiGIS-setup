@@ -1,0 +1,33 @@
+.layer-list-custom-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+}
+
+.layer-list-custom-menu__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+.layer-list-custom-menu__button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    background-color: #007ac3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.layer-list-custom-menu__button:hover {
+    background-color: #005c8f;
+}
+
+.layer-list-custom-menu__button:active {
+    background-color: #004a75;
+} 
