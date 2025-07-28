@@ -6,7 +6,6 @@ export { default } from "./LayerListCustomMenu";
 export { LayerListCustomMenuModel };
 
 export function registerProject1Components(registry: LibraryRegistry, namespace: string): void {
-    // Register LayerListCustomMenu component (Project1)
     registry.registerComponent({
         category: "layer",
         iconId: "layers",

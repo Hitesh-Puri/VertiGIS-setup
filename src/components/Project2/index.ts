@@ -1,30 +1,34 @@
 import type { LibraryRegistry } from "@vertigis/web/config";
-import ConnectMasterLayerModal from "./ConnectMasterLayerModal";
+import ConnectMasterLayerPanel from "./ConnectMasterLayerPanel";
 import ConnectMasterLayerModalModel from "./ConnectMasterLayerModalModel";
 
-export { default } from "./ConnectMasterLayerModal";
+export { ConnectMasterLayerPanel };
 export { ConnectMasterLayerModalModel };
 
 export function registerProject2Components(registry: LibraryRegistry, namespace: string): void {
-    registry.registerComponent({
-        category: "layer",
-        iconId: "layers-add",
-        name: "connectmaster-layer-modal",
-        namespace,
-        getComponentType: () => ConnectMasterLayerModal,
-        itemType: "connectmaster-layer-modal-model",
-        title: "ConnectMaster Layer Modal",
-    });
-    registry.registerModel({
-        getModel: config => new ConnectMasterLayerModalModel(config),
-        itemType: "connectmaster-layer-modal-model",
-    });
-    registry.registerCommand({
-        name: "connectmaster-layer-modal.open",
-        itemType: "connectmaster-layer-modal-model",
-    });
-    registry.registerCommand({
-        name: "connectmaster-layer-modal.close",
-        itemType: "connectmaster-layer-modal-model",
-    });
-} 
+  // Register the new panel component
+  registry.registerComponent({
+    category: "layer",
+    iconId: "layers",
+    name: "connectmaster-layer-panel",
+    namespace,
+    getComponentType: () => ConnectMasterLayerPanel,
+    itemType: "connectmaster-layer-panel",
+    title: "ConnectMaster Layer Panel",
+  });
+
+  registry.registerModel({
+    getModel: config => new ConnectMasterLayerModalModel(config),
+    itemType: "connectmaster-layer-panel",
+  });
+
+  registry.registerCommand({
+    name: "connectmaster-layer-modal.open",
+    itemType: "connectmaster-layer-panel",
+  });
+
+  registry.registerCommand({
+    name: "connectmaster-layer-modal.close",
+    itemType: "connectmaster-layer-panel",
+  });
+}

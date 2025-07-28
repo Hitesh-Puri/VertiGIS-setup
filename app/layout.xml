@@ -11,6 +11,7 @@
           <layer-presets config="layer-presets-config-1" models="#map-primary" grow="50" id="layer-presets-bbc8f3b7"/>
         </stack>
         <legend models="#map-primary" config="legend-config-1" id="legend-59366a40"/>
+        <custom:connectmaster-layer-panel config="connectmaster-layer-panel-1" id="connectmaster-layer-panel-tab"/>
       </web:tabs>
       <web:query-builder id="query-builder" config="query-builder-config-1" models="#map-primary" show-cancel-button="true"/>
       <web:filter-builder id="filter-builder" config="filter-builder-config-1" models="#map-primary" show-cancel-button="true"/>
@@ -49,7 +50,7 @@
           <web:address slot="context-menu" config="address-config-1" id="address-23391916"/>
           <web:geometry-toolbar id="geometry-toolbar" config="geometry-toolbar-config" slot="panel" active="false" size="medium"/>
           <custom:layer-list-custom-menu config="layer-list-custom-menu-1" slot="bottom-start" width="22" id="layer-list-custom-menu-1"/>
-          <custom:connectmaster-layer-modal config="connectmaster-layer-modal-1" slot="top-start" id="connectmaster-layer-modal-1"/>
+          <custom:geometric-location config="geometric-location-model-1" id="geometric-location-handler"/>
         </map>
         <panel show-close-button="true" show-minimize-button="false" show-maximize-button="false" active="false" config="panel-config-2" id="panel-32157b4c">
           <web:results-table config="results-config-1" active="false" models="#map-primary" show-star-controls="true" id="results-table-10756532"/>
