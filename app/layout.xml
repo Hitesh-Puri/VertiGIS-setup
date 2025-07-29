@@ -12,6 +12,7 @@
         </stack>
         <legend models="#map-primary" config="legend-config-1" id="legend-59366a40"/>
         <custom:connectmaster-layer-panel config="connectmaster-layer-panel-1" id="connectmaster-layer-panel-tab"/>
+        <!-- <custom:feature-creator config="feature-creator-model-1" id="feature-creator-tab"/> -->
       </web:tabs>
       <web:query-builder id="query-builder" config="query-builder-config-1" models="#map-primary" show-cancel-button="true"/>
       <web:filter-builder id="filter-builder" config="filter-builder-config-1" models="#map-primary" show-cancel-button="true"/>
@@ -44,6 +45,9 @@
           <expand config="expand-config-2" slot="bottom-end" id="expand-ddb187a4">
             <bookmarks config="bookmarks-config-1" id="bookmarks-9bd3fb13"/>
           </expand>
+          <expand config="expand-config-3" slot="bottom-end" id="expand-ddb187a4">
+            <custom:add-location-layer config="add-location-layer-model-1" id="add-location-layer-1"/>
+          </expand>
           <web:scale-input slot="bottom-start" config="scale-input-config-1" id="scale-input-7b758cd1"/>
           <scalebar slot="bottom-start" config="scalebar-config-1" id="scalebar-76974085"/>
           <map-coordinates slot="context-menu" config="map-coordinates-config-1" id="map-coordinates-bebc9abe"/>
@@ -51,6 +55,7 @@
           <web:geometry-toolbar id="geometry-toolbar" config="geometry-toolbar-config" slot="panel" active="false" size="medium"/>
           <custom:layer-list-custom-menu config="layer-list-custom-menu-1" slot="bottom-start" width="22" id="layer-list-custom-menu-1"/>
           <custom:geometric-location config="geometric-location-model-1" id="geometric-location-handler"/>
+          <custom:basemap-opacity-slider config="basemap-opacity-slider-model-1" slot="top-start" id="basemap-opacity-slider-1"/>
         </map>
         <panel show-close-button="true" show-minimize-button="false" show-maximize-button="false" active="false" config="panel-config-2" id="panel-32157b4c">
           <web:results-table config="results-config-1" active="false" models="#map-primary" show-star-controls="true" id="results-table-10756532"/>

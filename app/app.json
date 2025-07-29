@@ -1960,6 +1960,24 @@
       "id": "geometric-location-model-1"
     },
     {
+      "$type": "basemap-opacity-slider-model",
+      "id": "basemap-opacity-slider-model-1",
+      "icon": "layers",
+      "title": "Basemap Opacity Slider"
+    },
+    {
+      "$type": "feature-creator-model",
+      "id": "feature-creator-model-1",
+      "icon": "add-location",
+      "title": "Feature Creator"
+    },
+    {
+      "$type": "add-location-layer-model",
+      "id": "add-location-layer-model-1",
+      "icon": "layers",
+      "title": "Add Location Layer"
+    },
+    {
       "id": "geometry-toolbar-config",
       "items": [
         "item://menu-item/geometry-toolbar-edit-symbol",
