@@ -1,21 +1,90 @@
+/* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable no-await-in-loop */
-import type { MapExtension } from "@vertigis/arcgis-extensions/mapping/MapExtension";
+import type { MapModel } from "@vertigis/web/mapping";
+import { command } from "@vertigis/web/messaging";
 import {
   ComponentModelBase,
   serializable,
   type ComponentModelProperties,
   importModel,
 } from "@vertigis/web/models";
-import Graphic from "esri/Graphic";
-import Point from "esri/geometry/Point";
+import { inject } from "@vertigis/web/services";
+// import Graphic from "esri/Graphic";
+// import Point from "esri/geometry/Point";
 import FeatureLayer from "esri/layers/FeatureLayer";
+
+import MapClickAlert from "../Project10/MapClickAlert";
 
 export type AddLocationLayerModelProperties = ComponentModelProperties;
 
 @serializable
 export default class AddLocationLayerModel extends ComponentModelBase<AddLocationLayerModelProperties> {
   @importModel("map-extension")
-  mapExtension: MapExtension;
+  map: MapModel;
+
+  x?: number;
+  y?: number;
+
+  @inject("map-click-service")
+  mapClickService: MapClickAlert;
+
+  @command("points-of-interest.create")
+  async createNew(event?: any): Promise<void> {
+    try {
+      let geometry = null;
+
+      if (event?.mapPoint) {
+        geometry = event.mapPoint;
+      } else if (event?.geometry) {
+        geometry = event.geometry;
+      } else if (event?.args?.geometry) {
+        geometry = event.args.geometry;
+      }
+
+      // Extract coordinates from geometry or use map center
+      if (geometry && geometry.x !== undefined && geometry.y !== undefined) {
+        this.x = geometry.x;
+        this.y = geometry.y;
+      } else {
+        // Fallback to map center
+        if (!this.map?.view) {
+          console.error("Map not available");
+          await this.messages.commands.ui.alert.execute({
+            message: "Map not available",
+          });
+          return;
+        }
+
+        // Use map center as fallback
+        const center = this.map.view.center;
+        if (center) {
+          this.x = center.x;
+          this.y = center.y;
+        } else {
+          // Final fallback
+          this.x = 0;
+          this.y = 0;
+        }
+      }
+
+      /* for project 10*/
+      if (this.mapClickService) {
+        // Pass the map in the expected format for MapClickAlert
+        const mapExtension = { map: this.map.view?.map };
+        await this.mapClickService.findNearbyFeatures(this.x, this.y, mapExtension);
+      } else {
+        console.error("Map click service not available");
+        await this.messages.commands.ui.alert.execute({
+          message: "Map click service not available",
+        });
+      }
+    } catch (error) {
+      console.error("Error in createNew:", error);
+      await this.messages.commands.ui.alert.execute({
+        message: `Error processing map click: ${error}`,
+      });
+    }
+  }
 
   async addLocationLayers(): Promise<void> {
     try {
@@ -32,7 +101,8 @@ export default class AddLocationLayerModel extends ComponentModelBase<AddLocatio
 
       for (const layer of layers) {
         const layerId = `dev-main-layer-${layer.id}`;
-        const existing = this.mapExtension?.map.findLayerById(layerId);
+        // Check if layer already exists by iterating through layers
+        const existing = this.map?.view?.map?.layers?.find((layer: any) => layer.id === layerId);
         if (existing) {
           continue;
         }
@@ -47,10 +117,10 @@ export default class AddLocationLayerModel extends ComponentModelBase<AddLocatio
 
         await this.messages.commands.map.addLayers.execute({
           layers: featureLayer,
-          maps: this.mapExtension,
+          maps: this.map,
         });
 
-        await this.addSampleFeature(featureLayer);
+        // await this.addSampleFeature(featureLayer);
       }
 
       await this.messages.commands.ui.alert.execute({
@@ -64,34 +134,34 @@ export default class AddLocationLayerModel extends ComponentModelBase<AddLocatio
     }
   }
 
-  private async addSampleFeature(featureLayer: FeatureLayer): Promise<void> {
-    try {
-      const point = new Point({
-        x: 0,
-        y: 0,
-        spatialReference: { wkid: 3857 },
-      });
+  // private async addSampleFeature(featureLayer: FeatureLayer): Promise<void> {
+  //   try {
+  //     const point = new Point({
+  //       x: 0,
+  //       y: 0,
+  //       spatialReference: { wkid: 3857 },
+  //     });
 
-      const newFeature = new Graphic({
-        geometry: point,
-        attributes: {
-          Name: "Sample Location",
-          Description: "Added from location layer component",
-          Type: "Location Point",
-        },
-      });
+  //     const newFeature = new Graphic({
+  //       geometry: point,
+  //       attributes: {
+  //         Name: "Sample Location",
+  //         Description: "Added from location layer component",
+  //         Type: "Location Point",
+  //       },
+  //     });
 
-      const result = await featureLayer.applyEdits({
-        addFeatures: [newFeature],
-      });
+  //     const result = await featureLayer.applyEdits({
+  //       addFeatures: [newFeature],
+  //     });
 
-      if (result.addFeatureResults?.[0].objectId) {
-        console.log(`Sample feature added with Object ID: ${result.addFeatureResults[0].objectId}`);
-      } else {
-        console.warn("Sample feature add did not return ObjectID.");
-      }
-    } catch (editError) {
-      console.error("Failed to add sample feature to layer:", editError);
-    }
-  }
+  //     if (result.addFeatureResults?.[0].objectId) {
+  //       console.log(`Sample feature added with Object ID: ${result.addFeatureResults[0].objectId}`);
+  //     } else {
+  //       console.warn("Sample feature add did not return ObjectID.");
+  //     }
+  //   } catch (editError) {
+  //     console.error("Failed to add sample feature to layer:", editError);
+  //   }
+  // }
 }

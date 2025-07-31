@@ -33,6 +33,10 @@
         {
           "name": "geometric-location.show",
           "arguments": "item://geometric-location-model/geometric-location-model-1"
+        },
+        {
+          "name": "points-of-interest.create",
+          "arguments": "item://add-location-layer-model/add-location-layer-model-1"
         }
       ],
       "onHover": ["tasks.identify", "results.display-summary"],

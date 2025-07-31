@@ -8,15 +8,15 @@ import type AddLocationLayerModel from "./AddLocationLayerModel";
 export default function AddLocationLayer(props: LayoutElementProperties<AddLocationLayerModel>) {
   const { model } = props;
 
-  const handleAddLocationLayers = async () => {
-    // eslint-disable-next-line no-void
-    void model.addLocationLayers();
-  };
-
   return (
     <LayoutElement {...props}>
       <Box style={{ padding: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
-        <Button variant="contained" color="primary" onClick={handleAddLocationLayers} size="small">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => model.addLocationLayers()}
+          size="small"
+        >
           Add Location Layers
         </Button>
       </Box>

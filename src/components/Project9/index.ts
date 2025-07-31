@@ -42,4 +42,9 @@ export function registerProject9Components(registry: LibraryRegistry, namespace:
     getModel: config => new AddLocationLayerModel(config),
     itemType: "add-location-layer-model",
   });
+
+  registry.registerCommand({
+    name: "points-of-interest.create",
+    itemType: "add-location-layer-model",
+  });
 }
