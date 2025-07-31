@@ -10,25 +10,20 @@ interface LayerListCustomMenuProps extends LayoutElementProperties<LayerListCust
  * A simple component that provides custom layer list functionality
  */
 export default function LayerListCustomMenu(props: LayerListCustomMenuProps): React.ReactElement {
-    const { model } = props;
+  const { model } = props;
 
-    const handleExecuteCommand = async () => {
-        await model.executeCustomCommand();
-    };
-
-    return (
-        <LayoutElement {...props}>
-            <div className="layer-list-custom-menu">
-                <span className="layer-list-custom-menu__title">
-                    Custom Layer Menu
-                </span>
-                <button
-                    className="layer-list-custom-menu__button"
-                    onClick={handleExecuteCommand}
-                >
-                    Execute Command
-                </button>
-            </div>
-        </LayoutElement>
-    );
-} 
+  return (
+    <LayoutElement {...props}>
+      <div className="layer-list-custom-menu">
+        <span className="layer-list-custom-menu__title">Custom Layer Menu</span>
+        <button
+          className="layer-list-custom-menu__button"
+          onClick={() => model.executeCustomCommand()}
+          title="Execute Command"
+        >
+          Execute Command
+        </button>
+      </div>
+    </LayoutElement>
+  );
+}

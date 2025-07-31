@@ -1,12 +1,12 @@
 import type { LibraryRegistry } from "@vertigis/web/config";
-import ConnectMasterLayerPanel from "./ConnectMasterLayerPanel";
+
 import ConnectMasterLayerModalModel from "./ConnectMasterLayerModalModel";
+import ConnectMasterLayerPanel from "./ConnectMasterLayerPanel";
 
 export { ConnectMasterLayerPanel };
 export { ConnectMasterLayerModalModel };
 
 export function registerProject2Components(registry: LibraryRegistry, namespace: string): void {
-  // Register the new panel component
   registry.registerComponent({
     category: "layer",
     iconId: "layers",

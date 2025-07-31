@@ -1,4 +1,5 @@
 import type { LibraryRegistry } from "@vertigis/web/config";
+
 import BasemapOpacitySlider from "./BasemapOpacitySlider";
 import BasemapOpacitySliderModel from "./BasemapOpacitySliderModel";
 

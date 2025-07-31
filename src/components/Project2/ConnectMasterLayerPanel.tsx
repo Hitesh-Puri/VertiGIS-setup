@@ -34,6 +34,7 @@ export default function ConnectMasterLayerPanel(
   const [editingRenderer, setEditingRenderer] = React.useState(false);
   const [tempColor, setTempColor] = React.useState<string>("#007ac3");
   const [tempSize, setTempSize] = React.useState<number>(6);
+  const [layersOnMap, setLayersOnMap] = React.useState<Set<number>>(new Set());
 
   useWatchAndRerender(model, ["apiLayers", "isLoading", "error"]);
 
@@ -57,14 +58,30 @@ export default function ConnectMasterLayerPanel(
     loadApiData();
   }, [model]);
 
+  // Fetch layer details for all layers after API data is loaded
+  React.useEffect(() => {
+    const fetchAllLayerDetails = async () => {
+      if (apiLayers.length > 0 && !isLoading) {
+        try {
+          const detailPromises = apiLayers.map(layer => model.fetchLayerDetails(layer.id));
+          await Promise.all(detailPromises);
+
+          setApiLayers(model.apiLayers);
+        } catch (error) {
+          console.error("Error fetching layer details:", error);
+        }
+      }
+    };
+
+    fetchAllLayerDetails();
+  }, [apiLayers.length, isLoading, model]);
+
   const handleShowProperties = async (layer: APILayerItem) => {
     setSelectedLayer(layer);
     setShowPropertiesPanel(true);
     await model.showLayerProperties(layer);
-    // Update local state with any renderer information
     setApiLayers(model.apiLayers);
 
-    // Set temporary values for editing
     if (layer.drawingInfo?.renderer) {
       setTempColor(model.getRendererColor(layer.drawingInfo.renderer));
       setTempSize(model.getRendererSize(layer.drawingInfo.renderer));
@@ -82,14 +99,12 @@ export default function ConnectMasterLayerPanel(
   };
 
   const handleLayerItemClick = async (layer: APILayerItem) => {
-    // Zoom to layer extent when clicking on the layer item
-    await model.zoomToLayer(layer);
+    await handleShowProperties(layer);
   };
 
   const handleSaveRenderer = async () => {
     if (selectedLayer) {
       await model.updateLayerRenderer(selectedLayer.id, tempColor, tempSize);
-      // Update local state
       setApiLayers(model.apiLayers);
       setEditingRenderer(false);
     }
@@ -102,20 +117,15 @@ export default function ConnectMasterLayerPanel(
         break;
       case "add-to-map":
         await model.addApiLayerToMap(layer);
+        setLayersOnMap(prev => new Set(prev).add(layer.id));
         break;
-      case "load-renderer":
-        {
-          const details = await model.fetchLayerDetails(layer.id);
-          if (details) {
-            // Update the layer in our local state
-            setApiLayers(prev =>
-              prev.map(l => (l.id === layer.id ? { ...l, drawingInfo: details.drawingInfo } : l))
-            );
-          }
-        }
-        break;
-      case "zoom-to-layer":
-        await model.zoomToLayer(layer);
+      case "remove-from-map":
+        await model.removeLayerFromMap(layer.id);
+        setLayersOnMap(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(layer.id);
+          return newSet;
+        });
         break;
     }
   };
@@ -190,30 +200,27 @@ export default function ConnectMasterLayerPanel(
               }}
             >
               <MenuList>
-                <MenuItem onClick={() => handleAction("zoom-to-layer")}>
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <DynamicIcon src="zoom-feature" />
-                    <Typography variant="body2">Zoom to Layer</Typography>
-                  </Box>
-                </MenuItem>
                 <MenuItem onClick={() => handleAction("properties")}>
                   <Box display="flex" alignItems="center" gap={1}>
                     <DynamicIcon src="info" />
                     <Typography variant="body2">Properties</Typography>
                   </Box>
                 </MenuItem>
-                <MenuItem onClick={() => handleAction("add-to-map")}>
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <DynamicIcon src="plus" />
-                    <Typography variant="body2">Add to Map</Typography>
-                  </Box>
-                </MenuItem>
-                <MenuItem onClick={() => handleAction("load-renderer")}>
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <DynamicIcon src="palette" />
-                    <Typography variant="body2">Load Renderer</Typography>
-                  </Box>
-                </MenuItem>
+                {layersOnMap.has(layer.id) ? (
+                  <MenuItem onClick={() => handleAction("remove-from-map")}>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <DynamicIcon src="minus" />
+                      <Typography variant="body2">Remove from Map</Typography>
+                    </Box>
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={() => handleAction("add-to-map")}>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <DynamicIcon src="plus" />
+                      <Typography variant="body2">Add to Map</Typography>
+                    </Box>
+                  </MenuItem>
+                )}
               </MenuList>
             </Box>
           </>
@@ -259,12 +266,31 @@ export default function ConnectMasterLayerPanel(
         "&:hover": {
           backgroundColor: "action.hover",
         },
+        backgroundColor: layersOnMap.has(layer.id) ? "action.selected" : "transparent",
+        borderLeft: layersOnMap.has(layer.id) ? "3px solid #007ac3" : "none",
       }}
     >
       <Box display="flex" alignItems="center" gap={1} width="100%">
-        <DynamicIcon src="layers" color="primary" />
+        <DynamicIcon
+          src={layersOnMap.has(layer.id) ? "check-circle" : "layers"}
+          color={layersOnMap.has(layer.id) ? "success" : "primary"}
+        />
         <ListItemText
-          primary={layer.name}
+          primary={
+            <Box display="flex" alignItems="center" gap={1}>
+              <Typography
+                variant="body2"
+                fontWeight={layersOnMap.has(layer.id) ? "bold" : "normal"}
+              >
+                {layer.name}
+              </Typography>
+              {layersOnMap.has(layer.id) && (
+                <Typography variant="caption" color="success.main" fontWeight="bold">
+                  ON MAP
+                </Typography>
+              )}
+            </Box>
+          }
           secondary={
             <Box>
               <Typography variant="caption" component="div">

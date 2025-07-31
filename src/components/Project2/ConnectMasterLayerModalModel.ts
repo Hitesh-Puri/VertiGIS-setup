@@ -10,7 +10,6 @@ import {
 
 export type ConnectMasterLayerModalModelProperties = ComponentModelProperties;
 
-// Renderer interfaces
 export interface RendererSymbol {
   type: string;
   color?: number[] | string;
@@ -41,7 +40,6 @@ export interface LayerRenderer {
   }[];
 }
 
-// API Response interfaces
 export interface APILayerItem {
   id: number;
   name: string;
@@ -53,7 +51,6 @@ export interface APILayerItem {
   defaultVisibility?: boolean;
   parentLayerId?: number;
   subLayerIds?: number[];
-  // Enhanced with renderer information
   drawingInfo?: {
     renderer?: LayerRenderer;
   };
@@ -103,7 +100,6 @@ export interface APIFeatureServerResponse {
   advancedQueryCapabilities?: any;
 }
 
-// Utility function to map geometry types
 export const mapEsriGeometryType = (geometryType?: string): string => {
   if (!geometryType) return "point";
 
@@ -117,7 +113,6 @@ export const mapEsriGeometryType = (geometryType?: string): string => {
   return typeMap[geometryType] || geometryType.toLowerCase();
 };
 
-// Utility function to convert API layer to FeatureLayer
 export const convertToFeatureLayer = (layer: APILayerItem, baseUrl: string): FeatureLayer => {
   const url = `${baseUrl}/${layer.id}`;
 
@@ -125,7 +120,7 @@ export const convertToFeatureLayer = (layer: APILayerItem, baseUrl: string): Fea
     url,
     id: `connectmaster-layer-${layer.id}`,
     title: layer.name || `Layer ${layer.id}`,
-    visible: false, // default to hidden
+    visible: false,
     geometryType: mapEsriGeometryType(layer.geometryType) as any,
     outFields: ["*"],
   });
@@ -136,14 +131,12 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
   @importModel("map-extension")
   map: MapModel;
 
-  // Store current geometry type and layer for reference
   public geo?: string;
   public layer?: FeatureLayer;
 
   private readonly apiEndpoint =
     "https://ckmvlf3.amantyatech.com:8091/rest/services/CONNECTMASTER_ProjectVersion-61/FeatureServer";
 
-  // State management
   private _apiLayers: APILayerItem[] = [];
   private _loading = false;
   private _error: string | null = null;
@@ -213,6 +206,17 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
       }
 
       const data: APILayerDetailsResponse = await response.json();
+
+      const layerIndex = this._apiLayers.findIndex(l => l.id === layerId);
+      if (layerIndex !== -1) {
+        this._apiLayers[layerIndex] = {
+          ...this._apiLayers[layerIndex],
+          drawingInfo: data.drawingInfo,
+          extent: data.extent,
+        };
+        console.log(`Updated layer ${layerId} with details:`, data);
+      }
+
       return data;
     } catch (error) {
       this.showToast(
@@ -259,7 +263,6 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
       return;
     }
 
-    // Map layers to FeatureLayer objects and set visibility to true
     const featureLayers = layers.map(layer => {
       const featureLayer = convertToFeatureLayer(layer, this.apiEndpoint);
       this.geo = featureLayer.geometryType;
@@ -271,14 +274,17 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
     });
 
     try {
-      // For now, just show a toast with success message
-      // TODO: Implement proper layer addition when VertiGIS operations are clarified
-      console.log("Layers prepared for map:", featureLayers);
-      this.showToast(`Prepared ${layers.length} layer(s) for map addition`);
+      await this.messages.commands.map.addLayers.execute({
+        layers: featureLayers,
+        maps: this.map,
+      });
+
+      console.log("Layers added to map:", featureLayers);
+      this.showToast(`Successfully added ${layers.length} layer(s) to map`);
     } catch (error) {
-      console.error("Error preparing layers for map:", error);
+      console.error("Error adding layers to map:", error);
       this.showToast(
-        `Error preparing layers: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Error adding layers: ${error instanceof Error ? error.message : "Unknown error"}`,
         "error"
       );
     }
@@ -289,12 +295,10 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
    */
   async updateLayerRenderer(layerId: number, color: string, size: number): Promise<void> {
     try {
-      // Update the layer in our local state
       const layerIndex = this._apiLayers.findIndex(l => l.id === layerId);
       if (layerIndex !== -1) {
         const layer = this._apiLayers[layerIndex];
 
-        // Create or update renderer
         const updatedRenderer: LayerRenderer = {
           type: "simple",
           symbol: {
@@ -308,7 +312,6 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
           },
         };
 
-        // Update local layer data
         this._apiLayers[layerIndex] = {
           ...layer,
           drawingInfo: {
@@ -331,7 +334,6 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
    */
   @command("connectmaster-layer-modal.open")
   async openModal(): Promise<void> {
-    // Fetch API layers when modal opens
     await this.fetchApiLayers();
   }
 
@@ -345,11 +347,9 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
    * Show properties panel for a layer
    */
   async showLayerProperties(layer: APILayerItem): Promise<void> {
-    // Fetch detailed layer information if not already available
     if (!layer.drawingInfo) {
       const details = await this.fetchLayerDetails(layer.id);
       if (details?.drawingInfo) {
-        // Update the layer with renderer information
         const layerIndex = this._apiLayers.findIndex(l => l.id === layer.id);
         if (layerIndex !== -1) {
           this._apiLayers[layerIndex] = {
@@ -375,17 +375,54 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
   }
 
   /**
+   * Remove layer from map
+   */
+  async removeLayerFromMap(layerId: number): Promise<void> {
+    if (!this.map) {
+      console.error("Map is not initialized.");
+      this.showToast("Map not available", "error");
+      return;
+    }
+
+    try {
+      const mapView = this.map.view;
+      if (!mapView) {
+        this.showToast("Map view not available", "error");
+        return;
+      }
+
+      const layer = mapView.map.findLayerById(`layer-${layerId}`);
+      if (layer) {
+        await this.messages.commands.map.removeLayers.execute({
+          layers: [layer],
+          maps: this.map,
+        });
+        console.log(`Layer with ID ${layerId} removed from map`);
+        this.showToast(`Successfully removed layer from map`);
+      } else {
+        console.log(`Layer with ID ${layerId} not found on map`);
+        this.showToast(`Layer not found on map`, "error");
+      }
+    } catch (error) {
+      console.error(`Error removing layer with ID ${layerId}:`, error);
+      this.showToast(
+        `Error removing layer: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "error"
+      );
+    }
+  }
+
+  /**
    * Get renderer color as CSS string
    */
   getRendererColor(renderer?: LayerRenderer): string {
     if (!renderer?.symbol?.color && !renderer?.defaultSymbol?.color) {
-      return "#007ac3"; // Default blue
+      return "#007ac3";
     }
 
     const color = renderer.symbol?.color || renderer.defaultSymbol?.color;
 
     if (Array.isArray(color)) {
-      // RGBA array format [r, g, b, a]
       return `rgba(${color[0] || 0}, ${color[1] || 0}, ${color[2] || 0}, ${color[3] !== undefined ? color[3] / 255 : 1})`;
     }
 
@@ -393,7 +430,7 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
       return color;
     }
 
-    return "#007ac3"; // Default blue
+    return "#007ac3";
   }
 
   /**
