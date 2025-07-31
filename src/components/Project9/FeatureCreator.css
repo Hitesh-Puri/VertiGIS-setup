@@ -1,0 +1,259 @@
+.feature-creator-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 320px;
+  max-width: 400px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.feature-creator-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px !important;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.feature-creator-section {
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.feature-creator-section h6 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.drawing-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Form controls styling */
+.feature-creator-section .MuiFormControl-root {
+  margin-bottom: 8px;
+}
+
+.feature-creator-section .MuiTextField-root {
+  margin-bottom: 8px;
+}
+
+/* Button styling */
+.feature-creator-container .MuiButton-root {
+  text-transform: none;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.feature-creator-container .MuiButton-contained {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.feature-creator-container .MuiButton-contained:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Select styling */
+.feature-creator-section .MuiSelect-root {
+  font-size: 0.9rem;
+}
+
+.feature-creator-section .MuiMenuItem-root {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+/* Custom input styling */
+.input-group {
+  margin-bottom: 12px;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.custom-input,
+.custom-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: white;
+  transition: border-color 0.2s ease;
+}
+
+.custom-input:focus,
+.custom-textarea:focus {
+  outline: none;
+  border-color: #007ac3;
+  box-shadow: 0 0 0 2px rgba(0, 122, 195, 0.1);
+}
+
+.custom-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Text field styling */
+.feature-creator-section .MuiTextField-root .MuiInputBase-root {
+  font-size: 0.9rem;
+}
+
+/* Status information styling */
+.feature-creator-section .MuiTypography-caption {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #666;
+}
+
+/* Icon styling */
+.feature-creator-container .MuiSvgIcon-root {
+  font-size: 1.1rem;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .feature-creator-container {
+    min-width: 280px;
+    padding: 12px;
+  }
+
+  .feature-creator-section {
+    padding: 8px;
+    margin-bottom: 16px;
+  }
+
+  .feature-creator-title {
+    font-size: 1.1rem;
+    margin-bottom: 16px !important;
+  }
+}
+
+/* Hover effects */
+.feature-creator-section:hover {
+  border-color: #007ac3;
+  background: #f8f9fa;
+}
+
+/* Focus states for accessibility */
+.feature-creator-container .MuiButton-root:focus {
+  outline: 2px solid #007ac3;
+  outline-offset: 2px;
+}
+
+.feature-creator-section .MuiFormControl-root:focus-within {
+  border-color: #007ac3;
+}
+
+/* Animation for smooth transitions */
+.feature-creator-container {
+  transition: box-shadow 0.2s ease;
+}
+
+.feature-creator-section {
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+/* Custom scrollbar for container */
+.feature-creator-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.feature-creator-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.feature-creator-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.feature-creator-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Success/error states */
+.feature-creator-section.success {
+  border-color: #4caf50;
+  background-color: #f1f8e9;
+}
+
+.feature-creator-section.error {
+  border-color: #f44336;
+  background-color: #ffebee;
+}
+
+.feature-creator-section.warning {
+  border-color: #ff9800;
+  background-color: #fff3e0;
+}
+
+/* Disabled button states */
+.feature-creator-container .MuiButton-root:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dark theme support */
+/* @media (prefers-color-scheme: dark) {
+  .feature-creator-container {
+    background: #2d2d2d;
+    color: #ffffff;
+  }
+
+  .feature-creator-title {
+    color: #ffffff;
+    border-bottom-color: #555;
+  }
+
+  .feature-creator-section {
+    background: #404040;
+    border-color: #555;
+    color: #ffffff;
+  }
+
+  .feature-creator-section:hover {
+    background: #4a4a4a;
+    border-color: #007ac3;
+  }
+
+  .feature-creator-section .MuiTypography-caption {
+    color: #cccccc;
+  }
+} */

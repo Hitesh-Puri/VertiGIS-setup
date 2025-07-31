@@ -1,0 +1,152 @@
+.basemap-opacity-slider-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+  max-width: 320px;
+}
+
+.basemap-opacity-title {
+  margin-bottom: 16px !important;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+}
+
+.basemap-opacity-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.slider-container {
+  flex: 1;
+  min-width: 180px;
+}
+
+.basemap-opacity-slider {
+  width: 100%;
+}
+
+.percentage-display {
+  min-width: 50px;
+  text-align: center;
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.percentage-text {
+  font-weight: 600;
+  color: #333;
+  margin: 0 !important;
+}
+
+.opacity-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.opacity-label {
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Slider customization */
+.basemap-opacity-slider .MuiSlider-root {
+  color: #007ac3;
+}
+
+.basemap-opacity-slider .MuiSlider-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: #007ac3;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.basemap-opacity-slider .MuiSlider-thumb:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.basemap-opacity-slider .MuiSlider-track {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.basemap-opacity-slider .MuiSlider-rail {
+  height: 4px;
+  border-radius: 2px;
+  background-color: #e0e0e0;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .basemap-opacity-slider-container {
+    min-width: 240px;
+    padding: 12px;
+  }
+
+  .basemap-opacity-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .slider-container {
+    width: 100%;
+  }
+
+  .percentage-display {
+    width: 100%;
+  }
+}
+
+/* Hover effects */
+.basemap-opacity-slider-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Focus states for accessibility */
+.basemap-opacity-slider .MuiSlider-thumb:focus {
+  outline: 2px solid #007ac3;
+  outline-offset: 2px;
+}
+
+/* Animation for smooth transitions */
+.basemap-opacity-slider-container {
+  transition: box-shadow 0.2s ease;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .basemap-opacity-slider-container {
+    background: #2d2d2d;
+    color: #ffffff;
+  }
+
+  .basemap-opacity-title {
+    color: #ffffff;
+  }
+
+  .percentage-display {
+    background: #404040;
+    border-color: #555;
+    color: #ffffff;
+  }
+
+  .percentage-text {
+    color: #ffffff;
+  }
+
+  .opacity-label {
+    color: #cccccc;
+  }
+}

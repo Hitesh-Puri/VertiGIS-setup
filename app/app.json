@@ -33,6 +33,10 @@
         {
           "name": "geometric-location.show",
           "arguments": "item://geometric-location-model/geometric-location-model-1"
+        },
+        {
+          "name": "points-of-interest.create",
+          "arguments": "item://add-location-layer-model/add-location-layer-model-1"
         }
       ],
       "onHover": ["tasks.identify", "results.display-summary"],
@@ -1958,6 +1962,24 @@
     {
       "$type": "geometric-location-model",
       "id": "geometric-location-model-1"
+    },
+    {
+      "$type": "basemap-opacity-slider-model",
+      "id": "basemap-opacity-slider-model-1",
+      "icon": "layers",
+      "title": "Basemap Opacity Slider"
+    },
+    {
+      "$type": "feature-creator-model",
+      "id": "feature-creator-model-1",
+      "icon": "add-location",
+      "title": "Feature Creator"
+    },
+    {
+      "$type": "add-location-layer-model",
+      "id": "add-location-layer-model-1",
+      "icon": "layers",
+      "title": "Add Location Layer"
     },
     {
       "id": "geometry-toolbar-config",
