@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable import/order */
 import type { LayoutElementProperties } from "@vertigis/web/components";
@@ -15,6 +16,7 @@ import React from "react";
 
 import type ConnectMasterLayerModalModel from "./ConnectMasterLayerModalModel";
 import type { APILayerItem } from "./ConnectMasterLayerModalModel";
+import Button from "@vertigis/web/ui/Button";
 
 interface ConnectMasterLayerPanelProps
   extends LayoutElementProperties<ConnectMasterLayerModalModel> {}
@@ -502,7 +504,9 @@ export default function ConnectMasterLayerPanel(
                       sx={{ cursor: "pointer" }}
                       onClick={() => setEditingRenderer(true)}
                     >
-                      <Typography variant="body2">Edit Style</Typography>
+                      <Button variant="text" color="success">
+                        Edit Style
+                      </Button>
                     </Box>
                   ) : (
                     <Box display="flex" gap={1}>
@@ -517,7 +521,9 @@ export default function ConnectMasterLayerPanel(
                         sx={{ cursor: "pointer" }}
                         onClick={handleSaveRenderer}
                       >
-                        <Typography variant="body2">Save</Typography>
+                        <Button variant="text" color="success">
+                          Save
+                        </Button>
                       </Box>
                       <Box
                         component="button"
@@ -530,7 +536,9 @@ export default function ConnectMasterLayerPanel(
                         sx={{ cursor: "pointer" }}
                         onClick={() => setEditingRenderer(false)}
                       >
-                        <Typography variant="body2">Cancel</Typography>
+                        <Button variant="text" color="error">
+                          Cancel
+                        </Button>
                       </Box>
                     </Box>
                   )}

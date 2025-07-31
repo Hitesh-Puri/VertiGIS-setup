@@ -13,7 +13,7 @@ import { inject } from "@vertigis/web/services";
 // import Point from "esri/geometry/Point";
 import FeatureLayer from "esri/layers/FeatureLayer";
 
-import MapClickAlert from "../Project10/MapClickAlert";
+import MapClickAlertModel from "../Project10/MapClickAlertModel";
 
 export type AddLocationLayerModelProperties = ComponentModelProperties;
 
@@ -26,7 +26,7 @@ export default class AddLocationLayerModel extends ComponentModelBase<AddLocatio
   y?: number;
 
   @inject("map-click-service")
-  mapClickService: MapClickAlert;
+  mapClickService: MapClickAlertModel;
 
   @command("points-of-interest.create")
   async createNew(event?: any): Promise<void> {
@@ -69,7 +69,7 @@ export default class AddLocationLayerModel extends ComponentModelBase<AddLocatio
 
       /* for project 10*/
       if (this.mapClickService) {
-        // Pass the map in the expected format for MapClickAlert
+        // Pass the map in the expected format for MapClickAlertModel
         const mapExtension = { map: this.map.view?.map };
         await this.mapClickService.findNearbyFeatures(this.x, this.y, mapExtension);
       } else {

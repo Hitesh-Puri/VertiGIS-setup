@@ -13,7 +13,7 @@ interface NearbyFeature {
   geometry: __esri.Geometry;
 }
 
-export default class MapClickAlert extends ServiceBase {
+export default class MapClickAlertModel extends ServiceBase {
   @operation("map.click.find-nearby-features")
   public async findNearbyFeatures(x: any, y: any, mapExtension: any) {
     try {
@@ -138,6 +138,8 @@ export default class MapClickAlert extends ServiceBase {
       if (features.length > 10) {
         message += `\n...and ${features.length - 10} more features`;
       }
+
+      console.log("Message >>>>>>>>>>.:", message);
 
       await this.messages.commands.ui.displayNotification.execute({
         title: "Nearby Features",

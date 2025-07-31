@@ -8,7 +8,6 @@ import FormControl from "@vertigis/web/ui/FormControl";
 import MenuItem from "@vertigis/web/ui/MenuItem";
 import Select from "@vertigis/web/ui/Select";
 import Typography from "@vertigis/web/ui/Typography";
-import DynamicIcon from "@vertigis/web/ui/DynamicIcon";
 import { useEffect, useState } from "react";
 
 import "./FeatureCreator.css";

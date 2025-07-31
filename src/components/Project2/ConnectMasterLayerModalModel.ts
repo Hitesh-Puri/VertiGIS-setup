@@ -230,28 +230,28 @@ export default class ConnectMasterLayerModalModel extends ComponentModelBase<Con
   /**
    * Zoom to layer extent
    */
-  async zoomToLayer(layer: APILayerItem): Promise<void> {
-    try {
-      const details = await this.fetchLayerDetails(layer.id);
-      console.log("zoomToLayer -> ", details);
+  // async zoomToLayer(layer: APILayerItem): Promise<void> {
+  //   try {
+  //     const details = await this.fetchLayerDetails(layer.id);
+  //     console.log("zoomToLayer -> ", details);
 
-      if (details?.extent && this.map) {
-        await this.messages.commands.map.zoomToViewpoint.execute({
-          viewpoint: {
-            targetGeometry: details.extent,
-          },
-        });
-        this.showToast(`Zoomed to ${layer.name}`);
-      } else {
-        this.showToast(`No extent available for ${layer.name}`, "error");
-      }
-    } catch (error) {
-      this.showToast(
-        `Error zooming to layer: ${error instanceof Error ? error.message : "Unknown error"}`,
-        "error"
-      );
-    }
-  }
+  //     if (details?.extent && this.map) {
+  //       await this.messages.commands.map.zoomToViewpoint.execute({
+  //         viewpoint: {
+  //           targetGeometry: details.extent,
+  //         },
+  //       });
+  //       this.showToast(`Zoomed to ${layer.name}`);
+  //     } else {
+  //       this.showToast(`No extent available for ${layer.name}`, "error");
+  //     }
+  //   } catch (error) {
+  //     this.showToast(
+  //       `Error zooming to layer: ${error instanceof Error ? error.message : "Unknown error"}`,
+  //       "error"
+  //     );
+  //   }
+  // }
 
   /**
    * Add layers to map using improved pattern
